@@ -14,7 +14,7 @@ public class CalculatorString {
     }
 
     //analizza la stringa e assegna i pesi alle operazioni: * e / hanno peso 2; + e - hanno peso 1; i numeri hanno peso 0
-    public void calcolaPesi(){
+    public double calcolaPesi(){
         String temp = new String();
         for(int i = 0; i < stringa.length(); i++){
             temp = Character.toString(stringa.charAt(i));
@@ -22,13 +22,23 @@ public class CalculatorString {
                 pesi.add(2);
             }
             else if(temp.equals("+") || temp.equals("-")){
-                pesi.add(1);
+				if(temp.equals("-")){	//check if is negative number or minus sign						ln/sin						log							cos/abs
+					if(i != 0 && stringa.charAt(i-1) != '(' && stringa.charAt(i-1) != '^' && stringa.charAt(i-1) != 'n' && stringa.charAt(i-1) != 'g' && stringa.charAt(i-1) != 's'){
+						pesi.add(1);
+					}
+					else{	//is negative number
+						pesi.add(0);
+					}
+				}
+				else{
+					pesi.add(1);
+				}
             }
             else{
                 pesi.add(0);
             }
         }
-        
+        return calcolaEspressione();
     }
 
     public double calcolaEspressione(){
@@ -42,20 +52,41 @@ public class CalculatorString {
         }
         else{
             //se non ci sono operazioni base (+,-,*,/) allora controllo le operazioni matematica avanzate e restituisco direttamente il risultato
-            if(stringa.charAt(0) == '√'){		//caso radice quadrata
+            if(stringa.charAt(0) == '√'){		//radice quadrata
                 stringa = stringa.substring(1, stringa.length());
                 return Math.pow(Double.parseDouble(stringa), 0.5);
             }
-            //TODO aggiungere altre operazioni
-        }
+            else if(stringa.charAt(stringa.length() - 1) == '!'){	//fattoriale
+				stringa = stringa.substring(0, stringa.length() - 1);
+				return factorial(Double.parseDouble(stringa));
+			}
+			else if(stringa.charAt(0) == 'a'){	//valore assoluto
+				stringa = stringa.substring(3, stringa.length());
+				return Math.abs(Double.parseDouble(stringa));
+			}
+			else if(stringa.charAt(0) == 'π'){
+				return Math.PI;
+			}
+			else if(stringa.charAt(0) == 'e'){
+				return Math.exp(1);
+			}
+		}
         String root = "" + stringa.charAt(indiceRoot);
         AlberoBinario albero = new AlberoBinario(root);
         albero.creazioneAlbero(albero.root, stringa, 0, indiceRoot, stringa.length());
 
-        //albero.visitaAlbero(3);		//visita in order dell'albero
-        albero.visitaAlbero(2);		//visita post order che calcola il risultato dell'espressione
+        albero.visitaAlbero(2);		//visita post-order che calcola il risultato dell'espressione
         return albero.stack.pop();
     }
+
+	public double factorial(double number){
+		if(number >= 1){
+			return number * factorial(number-1);
+		}
+		else{
+			return 1;
+		}
+	}
 
     class Nodo{
             private String dato;
@@ -63,32 +94,32 @@ public class CalculatorString {
             private Nodo right;
 
             public Nodo(String dato){
-                    this.dato = dato;	
-                    this.left = null;
-                    this.left = null;
+				this.dato = dato;	
+				this.left = null;
+				this.left = null;
             }
 
             public String getDato(){
-                    return dato;
+				return dato;
             }
 
             public void setDato(String dato){
-                    this.dato = dato;
+				this.dato = dato;
             }
 
             public void setLeft(Nodo left){
-                    this.left = left;
+				this.left = left;
             }
 
             public void setRight(Nodo right){
-                    this.right = right;
+				this.right = right;
             }
 
             public Nodo getLeft(){
-                    return left;
+				return left;
             }
             public Nodo getRight(){
-                    return right;
+				return right;
             }
     }
 
@@ -161,7 +192,15 @@ public class CalculatorString {
             int counter = 0;
             for(int i = 0; i < stringa.length(); i++){
                 if(stringa.charAt(i) == '+' || stringa.charAt(i) == '-' || stringa.charAt(i) == '*' || stringa.charAt(i) == '/'){
-                    counter++;
+					if(stringa.charAt(i) == '-'){
+						if(i != 0 && stringa.charAt(i-1) != '(' && stringa.charAt(i-1) != '^' && stringa.charAt(i-1) != 'n' && stringa.charAt(i-1) != 'g' && stringa.charAt(i-1) != 's'){
+							counter++;
+						}
+					}
+					else{
+						counter++;
+					}
+                    
                 }
             }
             return counter;
@@ -232,6 +271,12 @@ public class CalculatorString {
                 }
 
                 else{
+					if(nodo.getDato().equals("π")){
+						nodo.setDato(Double.toString(Math.PI));
+					}
+					if(nodo.getDato().equals("e")){
+						nodo.setDato(Double.toString(Math.exp(1)));
+					}
                     String temp = nodo.getDato();
                     if(temp.charAt(0) == '√'){
                         temp = temp.substring(1, temp.length());
@@ -240,7 +285,7 @@ public class CalculatorString {
                     //TODO aggiungere le altre operazioni 
 
                     else{
-                        var = Double.parseDouble(nodo.getDato());
+                        var = Double.parseDouble(temp);
                     }
 
                     stack.add(var);
