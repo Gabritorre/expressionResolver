@@ -1,6 +1,8 @@
 
 public class BasicCalculatorGrafic extends javax.swing.JFrame {
-    public String operazioneTotale = new String();      //verranno salvati anche i segni dell'operazione
+    public String operazioneTotale = new String();
+	public int openBrackets = 0;
+	public int closeBrackets = 0;
     
     //Creates new form nuovoFrame
     public BasicCalculatorGrafic() {
@@ -603,16 +605,20 @@ public class BasicCalculatorGrafic extends javax.swing.JFrame {
     }//GEN-LAST:event_divisioneActionPerformed
 
     private void ugualeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ugualeActionPerformed
-        CalculatorString calcolatore = new CalculatorString(operazioneTotale);
-        calcolatore.calcolaPesi();
-        operazioneTotale = operazioneTotale.concat(" = ");
-        operazioneTotale = operazioneTotale.concat("" + calcolatore.calcolaEspressione());
-        jTextField1.setText(operazioneTotale);
-        operazioneTotale = "";
+		if(openBrackets == closeBrackets){
+			CalculatorString calcolatore = new CalculatorString(operazioneTotale);
+			double risultato = calcolatore.calcolaPesi();
+			operazioneTotale = operazioneTotale.concat(" = " + risultato);
+			jTextField1.setText(operazioneTotale);
+			operazioneTotale = "";
+		}
+        else{
+			System.out.println("missing parenthesis");
+		}
     }//GEN-LAST:event_ugualeActionPerformed
 
     private void potenzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potenzaActionPerformed
-        operazioneTotale = operazioneTotale.concat("^(");
+        operazioneTotale = operazioneTotale.concat("^");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_potenzaActionPerformed
 
@@ -627,33 +633,35 @@ public class BasicCalculatorGrafic extends javax.swing.JFrame {
     }//GEN-LAST:event_numeroNeperoActionPerformed
 
     private void logaritmoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logaritmoActionPerformed
-        operazioneTotale = operazioneTotale.concat("log(");
+        operazioneTotale = operazioneTotale.concat("log");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_logaritmoActionPerformed
 
     private void cosenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cosenoActionPerformed
-        operazioneTotale = operazioneTotale.concat("cos(");
+        operazioneTotale = operazioneTotale.concat("cos");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_cosenoActionPerformed
 
     private void senoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_senoActionPerformed
-        operazioneTotale = operazioneTotale.concat("sin(");
+        operazioneTotale = operazioneTotale.concat("sin");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_senoActionPerformed
 
     private void fattorialeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fattorialeActionPerformed
-        operazioneTotale = operazioneTotale.concat("!(");
+        operazioneTotale = operazioneTotale.concat("!");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_fattorialeActionPerformed
 
     private void apertaParentesiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apertaParentesiActionPerformed
         operazioneTotale = operazioneTotale.concat("(");
         jTextField1.setText(operazioneTotale);
+		openBrackets++;
     }//GEN-LAST:event_apertaParentesiActionPerformed
 
     private void chiusaParentesiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chiusaParentesiActionPerformed
         operazioneTotale = operazioneTotale.concat(")");
         jTextField1.setText(operazioneTotale);
+		closeBrackets++;
     }//GEN-LAST:event_chiusaParentesiActionPerformed
 
     private void PIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PIActionPerformed
@@ -674,12 +682,12 @@ public class BasicCalculatorGrafic extends javax.swing.JFrame {
     }//GEN-LAST:event_backSpaceActionPerformed
 
     private void logaritmoNaturaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logaritmoNaturaleActionPerformed
-        operazioneTotale = operazioneTotale.concat("ln(");
+        operazioneTotale = operazioneTotale.concat("ln");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_logaritmoNaturaleActionPerformed
 
     private void valoreAssolutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valoreAssolutoActionPerformed
-        operazioneTotale = operazioneTotale.concat("abs(");
+        operazioneTotale = operazioneTotale.concat("abs");
         jTextField1.setText(operazioneTotale);
     }//GEN-LAST:event_valoreAssolutoActionPerformed
 
