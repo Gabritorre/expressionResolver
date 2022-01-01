@@ -1,10 +1,9 @@
 import java.util.ArrayList;
 import java.util.Stack;
-//TODO gestione parentesi: 1. quando premi "=" chiami solo un metodo che è calcolaPesi che poi chiama da solo calcolaEspressione
-//2. su BasicCalculatorGrafic gestisci con un counter il numero di parentesi che devono essere chiuse, solo se il numero viene soddisfatto allora esegui il calcolo
+//TODO gestione parentesi:
 //3. prima di fare calcola pesi analizza la stringa e se appena incontri una parentesi ottieni la stringa contenuta in esse e crei un'altri istanza di 
 // CalculatorString e nel costruttore gli passi quella stringa contenuta nelle parentesi che poi verrà sostituita con il suo risultato, e potrai andare avanti senza la presenza
-// della parentesi che sarà diventata un normale numero
+// della parentesi che sarà diventata un normale numero // testare conbinazione di funzioni sin di PI, radice di seno 2 ecc...
 //4. mettere il text field non editable da tastiera
 //5. aumentare font
 public class CalculatorString {
@@ -72,11 +71,21 @@ public class CalculatorString {
 				stringa = stringa.substring(3, stringa.length());
 				return Math.abs(Double.parseDouble(stringa));
 			}
-			else if(stringa.charAt(0) == 'π'){
+			else if(stringa.charAt(0) == 'π'){	//PI
 				return Math.PI;
 			}
-			else if(stringa.charAt(0) == 'e'){
+			else if(stringa.charAt(0) == 'e'){	//napier's constant
 				return Math.exp(1);
+			}
+			else if(stringa.charAt(0) == 's'){	//sine
+				stringa = stringa.substring(3, stringa.length());
+				double value = Double.parseDouble(stringa);
+				return Math.sin(value);
+			}
+			else if(stringa.charAt(0) == 'c'){	//cosine
+				stringa = stringa.substring(3, stringa.length());
+				double value = Double.parseDouble(stringa);
+				return Math.cos(value);
 			}
 		}
 		String root = "" + stringa.charAt(indiceRoot);
@@ -293,19 +302,32 @@ public class CalculatorString {
 				}
 
 				else{
+					//conversione simboli
 					if(nodo.getDato().equals("π")){
 						nodo.setDato(Double.toString(Math.PI));
 					}
-					if(nodo.getDato().equals("e")){
+					else if(nodo.getDato().equals("e")){
 						nodo.setDato(Double.toString(Math.exp(1)));
 					}
+
+					//calcolo funzioni
 					String temp = nodo.getDato();
+
 					if(temp.charAt(0) == '√'){
 						temp = temp.substring(1, temp.length());
 						var = Math.pow(Double.parseDouble(temp), 0.5);
 					}
+					else if(temp.charAt(0) == 's'){
+						temp = temp.substring(3, temp.length());
+						var = Double.parseDouble(temp);
+						var = Math.sin(var);
+					}
+					else if(temp.charAt(0) == 'c'){
+						temp = temp.substring(3, temp.length());
+						var = Double.parseDouble(temp);
+						var = Math.cos(var);
+					}
 					//TODO aggiungere le altre operazioni 
-
 					else{
 						var = Double.parseDouble(temp);
 					}
