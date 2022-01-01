@@ -63,25 +63,31 @@ public class CalculatorString {
 				stringa = stringa.substring(1, stringa.length());
 				return Math.pow(Double.parseDouble(stringa), 0.5);
 			}
+
 			else if(stringa.charAt(stringa.length() - 1) == '!'){	//fattoriale
 				stringa = stringa.substring(0, stringa.length() - 1);
 				return factorial(Double.parseDouble(stringa));
 			}
+
 			else if(stringa.charAt(0) == 'a'){	//valore assoluto
 				stringa = stringa.substring(3, stringa.length());
 				return Math.abs(Double.parseDouble(stringa));
 			}
+
 			else if(stringa.charAt(0) == 'π'){	//PI
 				return Math.PI;
 			}
+
 			else if(stringa.charAt(0) == 'e'){	//napier's constant
 				return Math.exp(1);
 			}
+
 			else if(stringa.charAt(0) == 's'){	//sine
 				stringa = stringa.substring(3, stringa.length());
 				double value = Double.parseDouble(stringa);
 				return Math.sin(value);
 			}
+
 			else if(stringa.charAt(0) == 'c'){	//cosine
 				stringa = stringa.substring(3, stringa.length());
 				double value = Double.parseDouble(stringa);
@@ -92,7 +98,7 @@ public class CalculatorString {
 		AlberoBinario albero = new AlberoBinario(root);
 		albero.creazioneAlbero(albero.root, stringa, 0, indiceRoot, stringa.length());
 
-		albero.visitaAlbero(2);		//visita post-order che calcola il risultato dell'espressione
+		albero.visitaPostOrder(albero.root);		//visita post-order che calcola il risultato dell'espressione
 		return albero.stack.pop();
 	}
 
@@ -231,33 +237,7 @@ public class CalculatorString {
 			return counter;
 		}
 
-		public void visitaAlbero(int selezione){
-			System.out.println();
-			if(selezione == 1){
-				visitaPreOrder(root);
-			}
-			else if(selezione == 2){
-				visitaPostOrder(root);
-			}
-			else if(selezione == 3){
-				visitaInOrder(root);
-			}
-		}
-
-		//per debug
-		private void visitaPreOrder(Nodo nodo){	//stampa tutti i nodi in un determinato livello da sinistra a destra
-			if(nodo != null){
-				System.out.println(nodo.getDato());
-				if(nodo.getLeft() != null){
-					visitaPreOrder(nodo.getLeft());
-				}
-				if(nodo.getRight() != null){
-					visitaPreOrder(nodo.getRight());
-				}
-			}
-		}
-
-		private void visitaPostOrder(Nodo nodo){
+		public void visitaPostOrder(Nodo nodo){
 			double var;
 			if(nodo != null){
 				if(nodo.getLeft() != null){
@@ -267,40 +247,36 @@ public class CalculatorString {
 					visitaPostOrder(nodo.getRight());
 				}
 
-				if(nodo.getDato().equals("+")){
+				if(nodo.getDato().equals("+") || nodo.getDato().equals("-") || nodo.getDato().equals("*") || nodo.getDato().equals("/") || nodo.getDato().equals("^")){
 					double var2 = stack.pop();
 					double var1 = stack.pop();
-					double riusultato = var1 + var2;
-					stack.add(riusultato);
-				}
+					double risultato;
+					if(nodo.getDato().equals("+")){
+						risultato = var1 + var2;
+						stack.add(risultato);
+					}
 
-				else if(nodo.getDato().equals("-")){
-					double var2 = stack.pop();
-					double var1 = stack.pop();
-					double riusultato = var1 - var2;
-					stack.add(riusultato);
-				}
+					else if(nodo.getDato().equals("-")){
+						risultato = var1 - var2;
+						stack.add(risultato);
+					}
 
-				else if(nodo.getDato().equals("*")){
-					double var2 = stack.pop();
-					double var1 = stack.pop();
-					double riusultato = var1 * var2;
-					stack.add(riusultato);
-				}
+					else if(nodo.getDato().equals("*")){
+						risultato = var1 * var2;
+						stack.add(risultato);
+					}
 
-				else if(nodo.getDato().equals("/")){
-					double var2 = stack.pop();
-					double var1 = stack.pop();
-					double riusultato = var1 / var2;
-					stack.add(riusultato);
-				}
-				else if(nodo.getDato().equals("^")){
-					double var2 = stack.pop();
-					double var1 = stack.pop();
-					double risultato = Math.pow(var1, var2);
-					stack.add(risultato);
-				}
+					else if(nodo.getDato().equals("/")){
+						risultato = var1 / var2;
+						stack.add(risultato);
+					}
 
+					else if(nodo.getDato().equals("^")){
+						risultato = Math.pow(var1, var2);
+						stack.add(risultato);
+					}
+				}
+				
 				else{
 					//conversione simboli
 					if(nodo.getDato().equals("π")){
@@ -333,19 +309,6 @@ public class CalculatorString {
 					}
 
 					stack.add(var);
-				}
-			}
-		}
-
-		// per debug
-		private void visitaInOrder(Nodo nodo){
-			if(nodo != null){
-				if(nodo.getLeft() != null){
-					visitaInOrder(nodo.getLeft());
-				}
-				System.out.print(nodo.getDato() + " ");
-				if(nodo.getRight() != null){
-					visitaInOrder(nodo.getRight());
 				}
 			}
 		}
