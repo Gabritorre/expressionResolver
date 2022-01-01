@@ -5,6 +5,8 @@ import java.util.Stack;
 //3. prima di fare calcola pesi analizza la stringa e se appena incontri una parentesi ottieni la stringa contenuta in esse e crei un'altri istanza di 
 // CalculatorString e nel costruttore gli passi quella stringa contenuta nelle parentesi che poi verrà sostituita con il suo risultato, e potrai andare avanti senza la presenza
 // della parentesi che sarà diventata un normale numero
+//4. mettere il text field non editable da tastiera
+//5. aumentare font
 public class CalculatorString {
 	String stringa;
 	ArrayList<Integer> pesi = new ArrayList<Integer>();
@@ -20,6 +22,9 @@ public class CalculatorString {
 			temp = Character.toString(stringa.charAt(i));
 			if(temp.equals("*") || temp.equals("/")){
 				pesi.add(2);
+			}
+			else if(temp.equals("^")){	//la potenza ha più priorità di * e /
+				pesi.add(3);
 			}
 			else if(temp.equals("+") || temp.equals("-")){
 				if(temp.equals("-")){	//check if is negative number or minus sign						ln/sin						log							cos/abs
@@ -49,6 +54,9 @@ public class CalculatorString {
 		}
 		else if(pesi.contains(2)){		//se non ci sono "+" o "-" cerco gli ultimi segni "*" o "/"
 			indiceRoot = pesi.lastIndexOf(2);
+		}
+		else if(pesi.contains(3)){		//se non ci sono "+" o "/" cerco "^"
+			indiceRoot = pesi.lastIndexOf(3);
 		}
 		else{
 			//se non ci sono operazioni base (+,-,*,/) allora controllo le operazioni matematica avanzate e restituisco direttamente il risultato
@@ -163,7 +171,10 @@ public class CalculatorString {
 			int[] pesiTemp = new int[tempStringa.length()];
 			for(int i = 0; i < tempStringa.length(); i++){
 				temp = Character.toString(tempStringa.charAt(i));	//controllo il singolo carattere, assegnandogli il peso
-				if(temp.equals("*") || temp.equals("/")){
+				if(temp.equals("^")){
+					pesiTemp[i] = 3;
+				}
+				else if(temp.equals("*") || temp.equals("/")){
 					pesiTemp[i] = 2;
 				}
 				else if(temp.equals("+") || temp.equals("-")){
@@ -183,6 +194,11 @@ public class CalculatorString {
 					return i;
 				}
 			}
+			for(int i = tempStringa.length()-1; i >= 0; i--){	//se non ci sono per o diviso passo alla posizione della prima potenza partendo da destra
+				if(pesiTemp[i] == 3){
+					return i;
+				}
+			}
 			
 			return -1;
 		}
@@ -191,7 +207,7 @@ public class CalculatorString {
 		public int nSegni(String stringa){
 			int counter = 0;
 			for(int i = 0; i < stringa.length(); i++){
-				if(stringa.charAt(i) == '+' || stringa.charAt(i) == '-' || stringa.charAt(i) == '*' || stringa.charAt(i) == '/'){
+				if(stringa.charAt(i) == '+' || stringa.charAt(i) == '-' || stringa.charAt(i) == '*' || stringa.charAt(i) == '/' || stringa.charAt(i) == '^'){
 					if(stringa.charAt(i) == '-'){
 						if(i != 0 && stringa.charAt(i-1) != '(' && stringa.charAt(i-1) != '^' && stringa.charAt(i-1) != 'n' && stringa.charAt(i-1) != 'g' && stringa.charAt(i-1) != 's'){
 							counter++;
@@ -268,6 +284,12 @@ public class CalculatorString {
 					double var1 = stack.pop();
 					double riusultato = var1 / var2;
 					stack.add(riusultato);
+				}
+				else if(nodo.getDato().equals("^")){
+					double var2 = stack.pop();
+					double var1 = stack.pop();
+					double risultato = Math.pow(var1, var2);
+					stack.add(risultato);
 				}
 
 				else{
