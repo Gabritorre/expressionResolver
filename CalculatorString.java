@@ -93,6 +93,18 @@ public class CalculatorString {
 				double value = Double.parseDouble(stringa);
 				return Math.cos(value);
 			}
+
+			else if(stringa.charAt(1) == 'n'){	//natural logarithm (base e)
+				stringa = stringa.substring(2, stringa.length());
+				double value  = Double.parseDouble(stringa);
+				return Math.log(value);
+			}
+
+			else if(stringa.charAt(2) == 'g'){	//logarithm base 10
+				stringa = stringa.substring(3, stringa.length());
+				double value = Double.parseDouble(stringa);
+				return Math.log(value)/Math.log(10);
+			}
 		}
 		String root = "" + stringa.charAt(indiceRoot);
 		AlberoBinario albero = new AlberoBinario(root);
@@ -238,7 +250,7 @@ public class CalculatorString {
 		}
 
 		public void visitaPostOrder(Nodo nodo){
-			double var;
+			double var = 0;
 			if(nodo != null){
 				if(nodo.getLeft() != null){
 					visitaPostOrder(nodo.getLeft());
@@ -289,21 +301,34 @@ public class CalculatorString {
 					//calcolo funzioni
 					String temp = nodo.getDato();
 
-					if(temp.charAt(0) == '√'){
+					if(temp.charAt(0) == '√'){	//square root
 						temp = temp.substring(1, temp.length());
 						var = Math.pow(Double.parseDouble(temp), 0.5);
 					}
-					else if(temp.charAt(0) == 's'){
+					else if(temp.charAt(0) == 's'){	//sine
 						temp = temp.substring(3, temp.length());
 						var = Double.parseDouble(temp);
 						var = Math.sin(var);
 					}
-					else if(temp.charAt(0) == 'c'){
+					else if(temp.charAt(0) == 'c'){	//cosine
 						temp = temp.substring(3, temp.length());
 						var = Double.parseDouble(temp);
 						var = Math.cos(var);
 					}
-					//TODO aggiungere le altre operazioni 
+					else if(temp.charAt(0) == 'l'){
+						if(temp.charAt(1) == 'n'){	//ln
+							temp = temp.substring(2, temp.length());
+							var = Double.parseDouble(temp);
+							var = Math.log(var);
+						}
+						else if(temp.charAt(2) == 'g'){	//log
+							temp = temp.substring(3, temp.length());
+							var = Double.parseDouble(temp);
+							var = Math.log(var)/Math.log(10);
+						}
+					}
+					
+					//TODO aggiungere le altre operazioni
 					else{
 						var = Double.parseDouble(temp);
 					}
