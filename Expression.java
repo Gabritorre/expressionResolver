@@ -1,10 +1,7 @@
 import java.util.ArrayList;
-//TODO gestione parentesi:
-//3. prima di fare calcola pesi analizza la stringa e se appena incontri una parentesi ottieni la stringa contenuta in esse e crei un'altri istanza di 
-// CalculatorString e nel costruttore gli passi quella stringa contenuta nelle parentesi che poi verrà sostituita con il suo risultato, e potrai andare avanti senza la presenza
-// della parentesi che sarà diventata un normale numero // testare conbinazione di funzioni sin di PI, radice di seno 2 ecc...
 //4. mettere il text field non editable da tastiera
 //5. aumentare font
+//6. cambiare design
 public class Expression {
 	String stringa;
 	ArrayList<Integer> pesi = new ArrayList<Integer>();
@@ -13,7 +10,38 @@ public class Expression {
 		this.stringa = new String(stringa);
 	}
 
-	//analizza la stringa e assegna i pesi alle operazioni: * e / hanno peso 2; + e - hanno peso 1; i numeri hanno peso 0
+	//analizza la stringa per verificare la presenza di parentesi
+	public double analizzaStringa(int parentesi) {
+		int left_index;	//open bracket '('
+		int right_index;	//close bracket ')'
+		for(int j = 0; j < parentesi; j++){
+			left_index = -1;
+			right_index = -1;
+			for(int i = 0; i < stringa.length(); i++){
+				char temp = stringa.charAt(i);
+				if(temp == '('){
+					left_index = i;
+				}
+				else if(temp == ')'){
+					right_index = i;
+				}
+				if(left_index != -1 && right_index != -1){	//se entrambi hanno una posizione interrompo il ciclo ed eseguio i calcoli all'interno di quelle parentesi
+					break;
+				}
+			}
+			Expression child = new Expression(stringa.substring(left_index + 1, right_index));
+			stringa = stringa.replace(stringa.substring(left_index, right_index + 1), "" + child.calcolaPesi());	//rimpiazzo il contenuto della parentesi con il suo risultato
+		}
+		try{	
+			double risultato = Double.parseDouble(stringa);	//se non sorgono errori il risultato è già pronto
+			return risultato;
+		}catch(Exception e){	//se sorge un errore significa che nell'espressione ci sono altre operazioni da svolgere
+			return calcolaPesi();
+		}
+
+
+	}
+	//assegna i pesi alle operazioni: '*' e '/' hanno peso 2; '+' e '-' hanno peso 1; i numeri hanno peso 0
 	public double calcolaPesi(){
 		String temp = new String();
 		for(int i = 0; i < stringa.length(); i++){
@@ -43,9 +71,9 @@ public class Expression {
 		}
 		return calcolaEspressione();
 	}
-
+	//trova la root dell'albero, se la root non viene trovata passa al calcolo diretto dell'espressione
 	public double calcolaEspressione(){
-		int indiceRoot = -1;    //indice del segno (+,-,*,/) che sarà root dell'albero che creerò
+		int indiceRoot = -1;    //indice della stringa corrispondente al segno (+,-,*,/) che sarà root dell'albero che creerò
 		//controllo prima + e - perche hanno priorità più bassa e possono stare in posizione più alta nell'albero = vengono fatte dopo * e /
 		if(pesi.contains(1)){		//mi salvo l'ultimo indice del segno "+" o "-"
 			indiceRoot = pesi.lastIndexOf(1);

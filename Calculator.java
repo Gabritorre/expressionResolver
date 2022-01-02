@@ -607,13 +607,13 @@ public class Calculator extends javax.swing.JFrame {
 	private void ugualeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ugualeActionPerformed
 		if(openBrackets == closeBrackets){
 			Expression calcolatore = new Expression(operazioneTotale);
-			double risultato = calcolatore.calcolaPesi();
+			double risultato = calcolatore.analizzaStringa(openBrackets);
 			operazioneTotale = operazioneTotale.concat(" = " + risultato);
 			jTextField1.setText(operazioneTotale);
 			operazioneTotale = "";
 		}
 		else{
-			System.out.println("missing parenthesis");
+			System.out.println("missing parentheses");
 		}
 	}//GEN-LAST:event_ugualeActionPerformed
 
@@ -671,11 +671,19 @@ public class Calculator extends javax.swing.JFrame {
 
 	private void cancellaTuttoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancellaTuttoActionPerformed
 		operazioneTotale = "";
+		openBrackets = 0;
+		closeBrackets = 0;
 		jTextField1.setText(operazioneTotale);
 	}//GEN-LAST:event_cancellaTuttoActionPerformed
 
 	private void backSpaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backSpaceActionPerformed
 		if(!operazioneTotale.isEmpty()){
+			if(operazioneTotale.charAt(operazioneTotale.length()-1) == '('){
+				openBrackets--;
+			}
+			else if(operazioneTotale.charAt(operazioneTotale.length()-1) == ')'){
+				closeBrackets--;
+			}
 			operazioneTotale = operazioneTotale.substring(0, operazioneTotale.length()-1);
 			jTextField1.setText(operazioneTotale);   
 		}
