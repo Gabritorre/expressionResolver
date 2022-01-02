@@ -1,11 +1,11 @@
 
-public class BasicCalculatorGrafic extends javax.swing.JFrame {
+public class Calculator extends javax.swing.JFrame {
 	public String operazioneTotale = new String();
 	public int openBrackets = 0;
 	public int closeBrackets = 0;
 	
 	//Creates new form nuovoFrame
-	public BasicCalculatorGrafic() {
+	public Calculator() {
 		initComponents();
 	}
 
@@ -606,7 +606,7 @@ public class BasicCalculatorGrafic extends javax.swing.JFrame {
 
 	private void ugualeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ugualeActionPerformed
 		if(openBrackets == closeBrackets){
-			CalculatorString calcolatore = new CalculatorString(operazioneTotale);
+			Expression calcolatore = new Expression(operazioneTotale);
 			double risultato = calcolatore.calcolaPesi();
 			operazioneTotale = operazioneTotale.concat(" = " + risultato);
 			jTextField1.setText(operazioneTotale);
@@ -716,14 +716,22 @@ public class BasicCalculatorGrafic extends javax.swing.JFrame {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(BasicCalculatorGrafic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(Calculator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(BasicCalculatorGrafic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(Calculator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(BasicCalculatorGrafic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(Calculator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(BasicCalculatorGrafic.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(Calculator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
+		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
 		//</editor-fold>
@@ -736,7 +744,7 @@ public class BasicCalculatorGrafic extends javax.swing.JFrame {
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new BasicCalculatorGrafic().setVisible(true);
+				new Calculator().setVisible(true);
 			}
 		});
 	}
