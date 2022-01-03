@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-//4. mettere il text field non editable da tastiera
-//5. aumentare font
-//6. cambiare design
+
 public class Expression {
 	String stringa;
 	ArrayList<Integer> pesi = new ArrayList<Integer>();
