@@ -1,5 +1,6 @@
-import java.util.ArrayList;
+package expres;
 
+import java.util.ArrayList;
 public class Expression {
 	String stringa;
 	ArrayList<Integer> pesi = new ArrayList<Integer>();
@@ -139,7 +140,7 @@ public class Expression {
 		return albero.stack.pop();
 	}
 
-	public double factorial(double number){
+	public static double factorial(double number){
 		if(number >= 1){
 			return number * factorial(number-1);
 		}
